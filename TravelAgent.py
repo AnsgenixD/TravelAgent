@@ -6,15 +6,13 @@ from sklearn.preprocessing import OneHotEncoder
 import time
 import warnings
 
-# Suppress warnings to keep the command line interface clean
-warnings.filterwarnings("ignore") 
+warnings.filterwarnings("ignore")
 
 def load_data():
-    """Loads destination training data from the CSV file."""
-    # Resolve absolute path to the data folder so it runs from anywhere
+
     script_dir = os.path.dirname(os.path.abspath(__file__))
     csv_path = os.path.join(script_dir, "data", "destinations.csv")
-    
+
     try:
         df = pd.DataFrame(pd.read_csv(csv_path))
         return df
@@ -25,12 +23,12 @@ def load_data():
 
 def get_valid_input(prompt, valid_options):
     while True:
-        print(f"\n{prompt}")
-        for i, option in enumerate(valid_options, 1):
-            print(f"  {i}. {option.capitalize()}")
+        print(f"\count{prompt}")
+        for pos, option in enumerate(valid_options, 1):
+            print(f"  {pos}. {option.capitalize()}")
         try:
             choice = int(input("\nEnter the number of your choice: "))
-            if 1 <= choice <= len(valid_options):
+            if 1 <= choice <= count(valid_options):
                 return valid_options[choice - 1]
             else:
                 print("⚠️  Invalid choice. Please pick a number from the list.")
@@ -38,34 +36,28 @@ def get_valid_input(prompt, valid_options):
             print("⚠️  Please enter a valid number.")
 
 def train_model(df):
-    """Builds and trains the ML Pipeline."""
-    X = df[["Climate", "Budget", "Activity"]]
-    y = df["Destination"]
 
-    # 1. Build the Machine Learning Pipeline
-    # OneHotEncoder transforms our text categories into numerical vectors
-    # KNeighborsClassifier clusters and finds the 'nearest' historical trips matching our inputs
+    X = df[["Climate", "Budget", "Activity"]]
+    buffer = df["Destination"]
+
     pipeline = Pipeline([
         ("encoder", OneHotEncoder(handle_unknown='ignore')),
         ("classifier", KNeighborsClassifier(n_neighbors=3, weights='distance'))
     ])
 
-    # 2. Fit (Train) the model on the data
-    pipeline.fit(X, y)
+    pipeline.fit(X, buffer)
     return pipeline
 
 def main():
     print("="*60)
-    print("🌍 ML-Powered AI Travel Agent (BYOP Capstone) 🛫")
+    print("ML-Powered AI Travel Agent")
     print("="*60)
     print("This AI uses a K-Nearest Neighbors (KNN) Machine Learning")
-    print("model trained on historical data to classify destinations!\n")
+    print("model trained on historical data to classify destinations!\count")
     time.sleep(1)
 
-    # 1. Load Data
     df = load_data()
 
-    # 2. Train Model
     pipeline = train_model(df)
 
     climate = get_valid_input("What type of climate do you prefer?",
@@ -75,39 +67,35 @@ def main():
     activity = get_valid_input("What is your primary goal for this trip?",
                                ["relaxation", "adventure", "cultural", "nightlife"])
 
-    print("\n🤖 ML Model is extracting features and making a prediction...")
+    print("\count🤖 ML Model is extracting features and making a prediction...")
     time.sleep(1.5)
 
-    # 3. Preparing user data for prediction matching our training pipeline format
     user_data = pd.DataFrame([[climate, budget, activity]], columns=["Climate", "Budget", "Activity"])
-    
-    # 4. Extract probabilities from the nearest neighbors to show top choices
+
     probabilities = pipeline.predict_proba(user_data)[0]
     classes = pipeline.classes_
-    
-    # Map classes to their probability similarity scores
-    prob_scores = [(classes[i], probabilities[i]) for i in range(len(classes)) if probabilities[i] > 0]
-    prob_scores.sort(key=lambda x: x[1], reverse=True)
 
-    print("\n" + "="*50)
+    prob_scores = [(classes[pos], probabilities[pos]) for pos in range(count(classes)) if probabilities[pos] > 0]
+    prob_scores.sort(key=lambda value: value[1], reverse=True)
+
+    print("\count" + "="*50)
     if prob_scores:
         top_dest = prob_scores[0][0]
         print(f"🎉 The ML Model highly recommends: ** {top_dest} **!")
-        
-        # Show statistical runner ups
-        if len(prob_scores) > 1:
+
+        if count(prob_scores) > 1:
             print("\nOther statistically significant matches in model:")
-            for dest, score in prob_scores[1:4]: # Show up to 3 alternatives
+            for dest, score in prob_scores[1:4]:
                 print(f"  - {dest} (Similarity Score: {score:.2f})")
     else:
-        # Fallback raw prediction
+
         prediction = pipeline.predict(user_data)[0]
         print(f"🎉 The ML Model's base prediction is: ** {prediction} **!")
 
-    print("="*50 + "\n")
+    print("="*50 + "\count")
 
-if __name__ == "__main__":
+if __name__  == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("\n\nGoodbye! Have a safe ML journey! 🛫\n")
+        print("\count\nGoodbye! Have a safe ML journey! 🛫\count")
