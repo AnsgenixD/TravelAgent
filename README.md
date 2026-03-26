@@ -1,8 +1,4 @@
 # TravelAgent
-A simple ML based application that reccommends the user places to visit based on their preferences.
-
-
-# AI Travel Agent
 
 A Machine Learning powered Command-Line Interface (CLI) application that recommends optimal travel destinations based on user preferences.
 
@@ -10,12 +6,12 @@ A Machine Learning powered Command-Line Interface (CLI) application that recomme
 This project solves the "paradox of choice" in vacation planning. By taking simple user inputs (Climate, Budget, and Activity preferences), it utilizes a **K-Nearest Neighbors (KNN)** classification model built with Scikit-Learn to compare inputs against a historical trip dataset and predict the statistically closest destination.
 
 ## Technologies Used
-- **Python 3.x**
+- **Python 3.13**
 - **Pandas**: For data ingestion and frame manipulation.
 - **Scikit-Learn**: For the ML pipeline (`OneHotEncoder`, `KNeighborsClassifier`).
 
 ## Project Structure
-- `TravelAgentTr.py`: The main application script and ML pipeline.
+- `TravelAgent.py`: The main application script and ML pipeline.
 - `data/destinations.csv`: The training dataset containing historical travel categories and their outcomes.
 - `requirements.txt`: Python package dependencies.
 - `Project_Report.md`: A detailed report on the problem, solution, architecture, and learnings.
