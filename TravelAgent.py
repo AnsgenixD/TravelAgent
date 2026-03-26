@@ -71,7 +71,7 @@ def main():
     climate = get_valid_input("What type of climate do you prefer?",
                               ["tropical", "monsoon", "cold", "temperate", "desert"])
     budget = get_valid_input("What is your budget for this trip?",
-                             ["low", "medium", "high"])
+                             ["low(₹15,000 to ₹60,000)", "medium(₹80,000 to ₹1,50,000)", "high(₹2,000,000 to ₹4,00,000+)"])
     activity = get_valid_input("What is your primary goal for this trip?",
                                ["relaxation", "adventure", "cultural", "nightlife"])
 
